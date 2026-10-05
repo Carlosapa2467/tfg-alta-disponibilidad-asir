@@ -1,0 +1,29 @@
+# /etc/prometheus/prometheus.yml — VM2
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ['192.168.1.21:9093']   # Alertmanager en VM4
+
+rule_files:
+  - "/etc/prometheus/alert_rules.yml"
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'node'            # Node Exporter en las 4 VMs
+    static_configs:
+      - targets: ['192.168.1.10:9100', '192.168.1.11:9100', '192.168.1.20:9100', '192.168.1.21:9100']
+
+  - job_name: 'haproxy'         # HAProxy exporter en VM1 y VM2
+    static_configs:
+      - targets: ['192.168.1.10:9101', '192.168.1.11:9101']
+
+  - job_name: 'nginx'           # nginx-exporter en VM3 y VM4
+    static_configs:
+      - targets: ['192.168.1.20:9113', '192.168.1.21:9113']

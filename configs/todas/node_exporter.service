@@ -1,0 +1,12 @@
+# /etc/systemd/system/node_exporter.service — en las 4 VMs
+# Usuario sin home ni shell:  sudo useradd --no-create-home --shell /bin/false node_exporter
+[Unit]
+Description=Node Exporter
+After=network.target
+
+[Service]
+User=node_exporter
+ExecStart=/usr/local/bin/node_exporter
+
+[Install]
+WantedBy=default.target
